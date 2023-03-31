@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: radius
+  name: radius
+spec:
+  ports:
+    - name: "1812"
+      port: 1812
+      protocol: UDP
+      targetPort: 1812
+    - name: "1813"
+      port: 1813
+      protocol: UDP
+      targetPort: 1813
+    - name: "80"
+      port: 80
+      targetPort: 80
+  selector:
+    io.kompose.service: radius
+status:
+  loadBalancer: {}

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: radius-mysql
+  name: radius-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: radius-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: radius-mysql
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: radius
+            - name: MYSQL_PASSWORD
+              value: dalodbpass
+            - name: MYSQL_ROOT_PASSWORD
+              value: dalorootpass
+            - name: MYSQL_USER
+              value: radius
+          image: mariadb:10.3
+          name: radius-mysql
+          ports:
+            - containerPort: 3306
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: radius-mysql-claim0
+      restartPolicy: Always
+      volumes:
+        - name: radius-mysql-claim0
+          persistentVolumeClaim:
+            claimName: radius-mysql-claim0
+status: {}

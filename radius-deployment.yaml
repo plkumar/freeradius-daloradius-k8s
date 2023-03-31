@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: radius
+  name: radius
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: radius
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: radius
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: radius
+            - name: MYSQL_HOST
+              value: radius-mysql
+            - name: MYSQL_PASSWORD
+              value: dalodbpass
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USER
+              value: radius
+          image: frauhottelmann/daloradius-docker:1.2
+          name: radius
+          ports:
+            - containerPort: 1812
+              protocol: UDP
+            - containerPort: 1813
+              protocol: UDP
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}
